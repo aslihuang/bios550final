@@ -1,0 +1,65 @@
+---
+title: "Heart Failure Prediction Dataset Analysis"
+author: "Yuqing Huang"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+# Introduction
+
+Cardiovascular diseases (CVDs) are the leading cause of death worldwide, claiming roughly 17.9 million lives each year. Heart attacks and strokes make up the vast majority of these deaths, and about a third happen prematurely — in people under 70. Because of this, early detection and risk assessment play a key role in improving outcomes and reducing the overall burden of heart disease.
+
+This report explores the **Heart Failure Prediction Dataset**, a combined dataset drawn from five widely used heart disease collections in the UCI Machine Learning Repository (Cleveland, Hungarian, Switzerland, Long Beach VA, and Stalog). Together, these sources provide 918 patient records with 11 clinical features and a binary outcome indicating whether or not heart disease is present.
+
+**The goals of this analysis are to:**
+
+1. Summarize the demographic and clinical characteristics of the study population by heart disease status.
+2. Look at how key risk factors — such as chest pain type, resting blood pressure, cholesterol, and maximum heart rate — differ between patients with and without heart disease.
+3. Use visualizations to explore which clinical features may be useful predictors of heart disease.
+
+```{r load-data}
+heart <- read.csv("data/heart.csv")
+```
+
+The dataset has `r nrow(heart)` observations and `r ncol(heart)` variables.
+
+```{r preview}
+head(heart) %>%
+  kable(caption = "First 6 Rows of the Heart Disease Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE)
+```
+
+# Descriptive Summary Table
+
+The table below summarizes key clinical characteristics of the study population, stratified by heart disease status. Continuous variables are presented as mean (SD), and categorical variables as count (%).
+
+```{r summary-table}
+summary_df <- readRDS("output/table1.rds")
+
+summary_df %>%
+  kable(caption = "Table 1. Clinical Characteristics by Heart Disease Status",
+        align = "lcc") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  row_spec(0, bold = TRUE)
+```
+
+**Table Description:** Table 1 compares patients with and without heart disease across several clinical characteristics. Patients in the heart disease group tend to be slightly older, are more likely to be male, and reach lower maximum heart rates on average. Exercise-induced angina is much more common in the heart disease group. Differences in cholesterol and resting blood pressure between the two groups are relatively small. Elevated fasting blood sugar is also somewhat more common among heart disease patients.
+
+# Figure: Maximum Heart Rate by Heart Disease Status and Chest Pain Type
+
+```{r figure, out.width="100%"}
+knitr::include_graphics("output/figure1.png")
+```
+
+**Figure Description:** The boxplot shows how maximum heart rate during exercise varies by chest pain type and heart disease status. Across all four chest pain categories, patients without heart disease generally reach higher heart rates than those with heart disease. This gap is especially clear among asymptomatic patients, where the heart disease group has noticeably lower values. The pattern aligns with what we'd expect clinically — reduced exercise capacity often points to underlying heart problems. Among patients with typical angina, the heart disease group also shows a narrower spread of heart rate values, suggesting more consistently limited exercise tolerance.
