@@ -4,8 +4,14 @@ This repository contains a reproducible analysis of the [Heart Failure Predictio
 
 ## Generating the Final Report
 
-To build the final report (`report.html`), run the following from the project root directory:
+First, synchronize the R package environment used in this project:
+```
+make install
+```
 
+This runs `renv::restore()` to install the exact package versions recorded in `renv.lock`.
+
+Then, build the final report:
 ```
 make
 ```
@@ -17,14 +23,9 @@ This will:
 3. Render `report.Rmd` into `report.html`
 
 To clean all generated files and start fresh:
-
 ```
 make clean
 ```
-
-### Prerequisites
-
-The following R packages are required: `tidyverse`, `knitr`, `kableExtra`, `rmarkdown`.
 
 ## Repository Contents
 
@@ -35,7 +36,9 @@ The following R packages are required: `tidyverse`, `knitr`, `kableExtra`, `rmar
 | `code/make_figure.R` | **Creates Figure 1** — boxplot of maximum heart rate by chest pain type and heart disease status, saved to `output/figure1.png` |
 | `report.Rmd` | Main R Markdown report that reads pre-built table and figure from `output/` |
 | `output/` | Directory for generated table and figure (created by `make`) |
-| `Makefile` | Build rules for generating the report and its dependencies |
+| `Makefile` | Build rules including `install` for package restoration and rules for generating the report |
+| `renv.lock` | Lock file capturing exact R package versions used in this project |
+| `renv/` | renv library and settings |
 
 ## Report Overview
 

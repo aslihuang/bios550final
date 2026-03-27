@@ -1,4 +1,8 @@
-.PHONY: clean
+.PHONY: clean install
+
+# Install R packages using renv
+install:
+	Rscript -e "renv::restore(prompt = FALSE)"
 
 # Build the final report
 report.html: report.Rmd output/table1.rds output/figure1.png
