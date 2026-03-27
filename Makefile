@@ -1,4 +1,4 @@
-.PHONY: clean install
+.PHONY: clean install docker_build docker_run
 
 # Install R packages using renv
 install:
@@ -15,6 +15,17 @@ output/table1.rds: code/make_table.R data/heart.csv
 # Create Figure 1
 output/figure1.png: code/make_figure.R data/heart.csv
 	Rscript code/make_figure.R
+
+# Build Docker image
+docker_build:
+	docker build -t aslihuang/bios550final .
+
+# Run Docker container and output report to local report/ folder
+docker_run:
+	mkdir -p report && \
+	docker run --rm \
+	  -v "$$(pwd)/report":/project/report \
+	  aslihuang/bios550final
 
 # Clean generated files
 clean:
